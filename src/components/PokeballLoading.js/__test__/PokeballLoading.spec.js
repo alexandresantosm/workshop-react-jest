@@ -15,8 +15,10 @@ const setup = (props = {}) => {
 describe("PokeballLoading", () => {
   it("should be render with default props", () => {
     const { container, image } = setup();
+    const defaultWidth = 200;
 
     expect(container).toBeInTheDocument();
     expect(image).toBeInTheDocument();
+    expect(image.width).toBe(defaultWidth);
   });
 });
