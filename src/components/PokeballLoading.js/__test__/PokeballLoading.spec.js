@@ -45,4 +45,12 @@ describe("PokeballLoading", () => {
     expect(image.width).toBe(size);
     expect(image.height).toBe(size);
   });
+
+  it("should be render with message", () => {
+    const message = "Test";
+    const { getByText } = setup({ message });
+    const messageRendered = getByText(message);
+
+    expect(messageRendered).toBeInTheDocument();
+  });
 });
