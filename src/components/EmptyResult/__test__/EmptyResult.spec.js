@@ -33,4 +33,12 @@ describe("EmptyResult", () => {
 
     expect(image.width).toBe(width); // Valida se a imagem foi renderizada com o tamanho passado propriedade width
   });
+
+  it("should be render with message", () => {
+    const message = "Test";
+    const { getByText } = render(<EmptyResult message={message} />);
+    const messageRendered = getByText(message);
+
+    expect(messageRendered).toBeInTheDocument();
+  });
 });
