@@ -14,7 +14,7 @@ const setup = (props = {}) => {
   };
 };
 
-jest.useFakeTimers();
+jest.useFakeTimers(); // Habilita uso de delay no teste
 
 describe("SearchBar", () => {
   it("should be render with default props", () => {
@@ -31,9 +31,18 @@ describe("SearchBar", () => {
 
     fireEvent.change(input, { target: { value: "Test" } });
 
-    jest.runTimersToTime(deafultInputDelay);
+    jest.runTimersToTime(deafultInputDelay); // Dispara o tempo (delay)
 
     expect(onChange).toHaveBeenCalledTimes(1);
     expect(onChange).toHaveBeenCalledWith({ target: input });
+  });
+
+  it("should be button emit onButtonClick event", () => {
+    const onButtonClick = jest.fn();
+    const { button } = setup({ onButtonClick });
+
+    fireEvent.click(button);
+
+    expect(onButtonClick).toHaveBeenCalledTimes(1);
   });
 });
