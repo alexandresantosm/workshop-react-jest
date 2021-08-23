@@ -3,11 +3,20 @@ import { render } from "@testing-library/react";
 
 import EmptyResult from "../EmptyResult"; // Componente react
 
+const setup = (props = {}) => {
+  const renderResult = render(<EmptyResult {...props} />);
+
+  return {
+    image: renderResult.getByAltText(/Empty Result/i),
+    ...renderResult,
+  };
+};
+
 describe("EmptyResult", () => {
   // Faz um agrupamento de testes
   it("should be render with default props", () => {
     // Teste propriamente dito
-    const { container, getByAltText, getByText } = render(<EmptyResult />);
+    const { container, getByText, image } = setup();
     const defaultMessage = "Oops... Não encontramos nada.";
     const defaultWidth = 200;
     /*
@@ -17,7 +26,6 @@ describe("EmptyResult", () => {
       button: conteudo (texto) do botao
       alguns casos: atributo title
     */
-    const image = getByAltText("Empty Result");
     const message = getByText(defaultMessage);
 
     expect(container).toBeInTheDocument(); // Valida se o componente foi renderizado na tela
@@ -28,15 +36,14 @@ describe("EmptyResult", () => {
 
   it("should be image have correct width", () => {
     const width = 150;
-    const { getByAltText } = render(<EmptyResult width={width} />);
-    const image = getByAltText("Empty Result");
+    const { image } = setup({ width });
 
     expect(image.width).toBe(width); // Valida se a imagem foi renderizada com o tamanho passado propriedade width
   });
 
   it("should be render with message", () => {
     const message = "Test";
-    const { getByText } = render(<EmptyResult message={message} />);
+    const { getByText } = setup({ message });
     const messageRendered = getByText(message);
 
     expect(messageRendered).toBeInTheDocument();
