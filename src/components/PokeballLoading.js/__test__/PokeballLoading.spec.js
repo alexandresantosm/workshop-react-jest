@@ -37,4 +37,12 @@ describe("PokeballLoading", () => {
 
     expect(queryByText(message)).toBeInTheDocument();
   });
+
+  it("should be image have correct size", () => {
+    const size = 150;
+    const { image } = setup({ size });
+
+    expect(image.width).toBe(size);
+    expect(image.height).toBe(size);
+  });
 });
