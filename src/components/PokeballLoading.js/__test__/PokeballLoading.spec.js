@@ -22,4 +22,19 @@ describe("PokeballLoading", () => {
     expect(image.width).toBe(defaultSize);
     expect(image.height).toBe(defaultSize);
   });
+
+  it("should be message change", () => {
+    /*
+      queryByText: usa para testar por exemplo quando um texto nao esta na tela e em outro momento o texto esta na tela
+      rerender: rerenderiza um componente
+    */
+    const { queryByText, rerender } = setup();
+    const message = "Test";
+
+    expect(queryByText(message)).not.toBeInTheDocument();
+
+    rerender(<PokeballLoading message={message} />);
+
+    expect(queryByText(message)).toBeInTheDocument();
+  });
 });
