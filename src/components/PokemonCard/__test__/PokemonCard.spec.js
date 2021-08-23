@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, fireEvent } from "@testing-library/react";
 
 import { cardBuilder } from "../../../__mocks__/CardBuilder";
 import PokemonCard from "../PokemonCard";
@@ -26,10 +26,11 @@ describe("PokemonCard", () => {
   });
 
   it("should be emit onClick event", () => {
-    const onClick = jest.fn();
+    const onClick = jest.fn(); // mocka uma funcao
     const { image } = setup({ onClick });
 
-    image.click();
+    // image.click(); // Para eventos simples
+    fireEvent.click(image); // fireEvent: para cenarios complexos como por exemplo mudanca de valor de input
 
     expect(onClick).toHaveBeenCalledTimes(1);
   });
