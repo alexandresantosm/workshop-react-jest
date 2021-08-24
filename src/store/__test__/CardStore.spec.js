@@ -52,4 +52,34 @@ describe("CardStore", () => {
       query: "",
     });
   });
+
+  it("should be dispatch nextCards", async () => {
+    const card = cardBuilder({ name: "Test" });
+    const query = "test";
+
+    store.dispatch(cardStore.actions.setQuery({ query }));
+
+    axiosMock.get.mockResolvedValue({
+      data: {
+        cards: [card],
+      },
+    });
+
+    await store.dispatch(cardStore.actions.nextCards());
+
+    const currentState = store.getState();
+
+    expect(axiosMock.get).toHaveBeenCalledTimes(1);
+    expect(axiosMock.get).toHaveBeenCalledWith(
+      `/cards?page=2&name=${query}&pageSize=27`
+    );
+
+    expect(currentState.card).toEqual({
+      ...initialCardsState,
+      query,
+      page: 2,
+      cards: { ...initialCardsState.cards, [card.id]: card },
+      ids: [...initialCardsState.ids, card.id],
+    });
+  });
 });
