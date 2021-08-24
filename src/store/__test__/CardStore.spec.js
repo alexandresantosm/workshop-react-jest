@@ -121,4 +121,10 @@ describe("CardStore", () => {
       orderBy(Object.values(initialCardsState.cards), ["name"])
     );
   });
+
+  it("should be select loading", () => {
+    const loading = cardStore.selectors.loading({ card: initialCardsState });
+
+    expect(loading).toBe(false);
+  });
 });
