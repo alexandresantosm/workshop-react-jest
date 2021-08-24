@@ -92,4 +92,14 @@ describe("CardStore", () => {
 
     expect(currentState.card.page).toBe(page);
   });
+
+  it("should be dispatch setQuery", () => {
+    const query = "test";
+
+    store.dispatch(cardStore.actions.setQuery({ query }));
+
+    const currentState = store.getState();
+
+    expect(currentState.card.query).toBe(query);
+  });
 });
