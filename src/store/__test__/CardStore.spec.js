@@ -1,5 +1,6 @@
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import thunk from "redux-thunk";
+import { orderBy } from "lodash";
 
 import { axiosMock } from "../../__mocks__/AxiosMock";
 import cardStore from "../card.store";
@@ -111,5 +112,13 @@ describe("CardStore", () => {
     const currentState = store.getState();
 
     expect(currentState.card.loading).toBe(loading);
+  });
+
+  it("should be select cards", () => {
+    const cards = cardStore.selectors.cards({ card: initialCardsState });
+
+    expect(cards).toEqual(
+      orderBy(Object.values(initialCardsState.cards), ["name"])
+    );
   });
 });
