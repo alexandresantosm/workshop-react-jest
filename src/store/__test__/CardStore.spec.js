@@ -102,4 +102,14 @@ describe("CardStore", () => {
 
     expect(currentState.card.query).toBe(query);
   });
+
+  it("should be dispatch setLoading", () => {
+    const loading = true;
+
+    store.dispatch(cardStore.actions.setLoading({ loading }));
+
+    const currentState = store.getState();
+
+    expect(currentState.card.loading).toBe(loading);
+  });
 });
