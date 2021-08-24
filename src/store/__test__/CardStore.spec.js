@@ -82,4 +82,14 @@ describe("CardStore", () => {
       ids: [...initialCardsState.ids, card.id],
     });
   });
+
+  it("should be dispatch setPage", () => {
+    const page = 2021;
+
+    store.dispatch(cardStore.actions.setPage({ page }));
+
+    const currentState = store.getState();
+
+    expect(currentState.card.page).toBe(page);
+  });
 });
