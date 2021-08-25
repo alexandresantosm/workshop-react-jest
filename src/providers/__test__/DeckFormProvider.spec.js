@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { render, wait } from "@testing-library/react";
+import { render, wait, fireEvent } from "@testing-library/react";
 import { MemoryRouter, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 
@@ -134,5 +134,16 @@ describe("DeckFormProvider", () => {
     const secondElement = queryByText(`${card.name}`);
 
     expect(secondElement).not.toBeInTheDocument();
+  });
+
+  it("should be set name deck", () => {
+    const { input, getByText } = setup();
+    const deckName = "Deck test";
+
+    fireEvent.change(input, { target: { value: deckName } });
+
+    const deck = getByText(deckName);
+
+    expect(deck).toBeInTheDocument();
   });
 });
