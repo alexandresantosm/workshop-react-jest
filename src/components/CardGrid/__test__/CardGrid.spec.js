@@ -6,6 +6,7 @@ import {
   mockedContext,
 } from "../../../__mocks__/DeckFormProviderMock";
 import CardGrid from "../CardGrid";
+import { bulbasaurMock, pikachuMock } from "../../../__mocks__/CardBuilder";
 
 const setup = ({ cards = [], loading = false }) => {
   const renderResult = render(
@@ -30,5 +31,16 @@ describe("CardGrid", () => {
     expect(container).toBeInTheDocument();
     expect(emptyImage).toBeInTheDocument();
     expect(message).toBeInTheDocument();
+  });
+
+  it("should be render cards", () => {
+    const cards = [bulbasaurMock, pikachuMock];
+    const { getByAltText } = setup({ cards });
+
+    cards.forEach((card) => {
+      const cardImage = getByAltText(`${card.id}-${card.name}`);
+
+      expect(cardImage).toBeInTheDocument();
+    });
   });
 });
