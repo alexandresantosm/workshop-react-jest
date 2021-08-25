@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import { axiosMock } from "../../__mocks__/AxiosMock";
 import DeckAddView from "../DeckAddView";
 import { storeBuilder } from "../../__mocks__/StoreBuilder";
+import { pikachuMock, squirtleMock } from "../../__mocks__/CardBuilder";
 
 const setup = (props = {}) => {
   jest.clearAllMocks();
@@ -49,5 +50,21 @@ describe("DeckAddView", () => {
     expect(input).toBeInTheDocument();
     expect(buttonAdd).toBeInTheDocument();
     expect(queryByText(emptyMessage)).toBeInTheDocument();
+  });
+
+  it("should be render cards", async () => {
+    const cards = [pikachuMock, squirtleMock];
+
+    mockCardsResponse(cards);
+
+    const { getByAltText } = setup();
+
+    await wait(undefined, { timeout: 0 });
+
+    cards.forEach((card) => {
+      const cardImage = getByAltText(`${card.id}-${card.name}`);
+
+      expect(cardImage).toBeInTheDocument();
+    });
   });
 });
