@@ -1,12 +1,14 @@
 import React from "react";
 import { MemoryRouter, Route } from "react-router-dom";
-import { render, wait } from "@testing-library/react";
+import { render, wait, fireEvent } from "@testing-library/react";
 import { Provider } from "react-redux";
 
 import { axiosMock } from "../../__mocks__/AxiosMock";
 import DeckAddView from "../DeckAddView";
 import { storeBuilder } from "../../__mocks__/StoreBuilder";
 import { pikachuMock, squirtleMock } from "../../__mocks__/CardBuilder";
+
+jest.useFakeTimers();
 
 const setup = (props = {}) => {
   jest.clearAllMocks();
@@ -73,5 +75,20 @@ describe("DeckAddView", () => {
     const loadingImage = getByAltText("Pokeball Loading");
 
     expect(loadingImage).toBeInTheDocument();
+  });
+
+  it("should be search card", () => {
+    mockCardsResponse();
+    const query = "test";
+    const { input } = setup();
+
+    fireEvent.change(input, { target: { value: query } });
+
+    jest.runAllTimers();
+
+    expect(axiosMock.get).toHaveBeenCalledTimes(2);
+    expect(axiosMock.get).toHaveBeenCalledWith(
+      `/cards?page=1&name=${query}&pageSize=27`
+    );
   });
 });
