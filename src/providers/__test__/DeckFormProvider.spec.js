@@ -150,7 +150,7 @@ describe("DeckFormProvider", () => {
     expect(deck).toBeInTheDocument();
   });
 
-  it("should be not save", () => {
+  it("should be not save deck", () => {
     const { buttonSave, input } = setup();
 
     fireEvent.click(buttonSave);
