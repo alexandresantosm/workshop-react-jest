@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, fireEvent } from "@testing-library/react";
 
 import {
   DeckFormProviderMock,
@@ -42,5 +42,15 @@ describe("CardGrid", () => {
 
       expect(cardImage).toBeInTheDocument();
     });
+  });
+
+  it("should be add card", () => {
+    const cards = [bulbasaurMock];
+    const { getByAltText, addCard } = setup({ cards });
+    const cardImage = getByAltText(`${bulbasaurMock.id}-${bulbasaurMock.name}`);
+
+    fireEvent.click(cardImage);
+
+    expect(addCard).toHaveBeenCalledWith(bulbasaurMock);
   });
 });
