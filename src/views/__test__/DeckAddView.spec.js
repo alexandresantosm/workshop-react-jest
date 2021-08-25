@@ -67,4 +67,11 @@ describe("DeckAddView", () => {
       expect(cardImage).toBeInTheDocument();
     });
   });
+
+  it("should be render loading", async () => {
+    const { getByAltText } = setup();
+    const loadingImage = getByAltText("Pokeball Loading");
+
+    expect(loadingImage).toBeInTheDocument();
+  });
 });
