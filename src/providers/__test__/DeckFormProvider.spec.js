@@ -8,6 +8,9 @@ import { storeBuilder } from "../../__mocks__/StoreBuilder";
 import { pikachuMock } from "../../__mocks__/CardBuilder";
 import { deckBuilder } from "../../__mocks__/DeckBuilder";
 import { arrayToObject, getArrayIds } from "../../__mocks__/utils";
+import errorHandler from "../../utils/error-handler";
+
+jest.mock("../../utils/error-handler");
 
 const DeckFormTestComponent = ({ card }) => {
   const {
@@ -145,5 +148,24 @@ describe("DeckFormProvider", () => {
     const deck = getByText(deckName);
 
     expect(deck).toBeInTheDocument();
+  });
+
+  it("should be not save", () => {
+    const { buttonSave, input } = setup();
+
+    fireEvent.click(buttonSave);
+
+    expect(errorHandler).toHaveBeenCalledWith(
+      "Você precisa dar um nome ao baralho."
+    );
+
+    const deckName = "Deck test";
+
+    fireEvent.change(input, { target: { value: deckName } });
+    fireEvent.click(buttonSave);
+
+    expect(errorHandler).toHaveBeenCalledWith(
+      "Seu baralho precisa ter no mínimo 24 e no máximo 60 cartas."
+    );
   });
 });
