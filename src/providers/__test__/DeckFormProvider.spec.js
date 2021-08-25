@@ -1,11 +1,13 @@
 import React, { useContext } from "react";
-import { render } from "@testing-library/react";
+import { render, wait } from "@testing-library/react";
 import { MemoryRouter, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 
 import DeckFormProvider, { DeckFormContext } from "../DeckFormProvider";
 import { storeBuilder } from "../../__mocks__/StoreBuilder";
 import { pikachuMock } from "../../__mocks__/CardBuilder";
+import { deckBuilder } from "../../__mocks__/DeckBuilder";
+import { arrayToObject, getArrayIds } from "../../__mocks__/utils";
 
 const DeckFormTestComponent = ({ card }) => {
   const {
@@ -96,5 +98,41 @@ describe("DeckFormProvider", () => {
 
     expect(firstElement).toBeInTheDocument();
     expect(secondElement).toBeInTheDocument();
+  });
+
+  it("should be remove card correctly", async () => {
+    const initialCount = 4;
+
+    const deck = deckBuilder({
+      cards: [{ ...pikachuMock, count: initialCount }],
+    });
+
+    const initialState = {
+      deck: {
+        decks: arrayToObject([deck]),
+        ids: getArrayIds([deck]),
+      },
+    };
+
+    const { buttonRemove, getByText, queryByText, card } = setup(
+      initialState,
+      deck.id
+    );
+
+    await wait(undefined, { timeout: 0 });
+
+    const once = 1;
+
+    clickTimes(buttonRemove, once);
+
+    const firstElement = getByText(`${initialCount - once} ${card.name}`);
+
+    expect(firstElement).toBeInTheDocument();
+
+    clickTimes(buttonRemove, 10);
+
+    const secondElement = queryByText(`${card.name}`);
+
+    expect(secondElement).not.toBeInTheDocument();
   });
 });
