@@ -32,7 +32,7 @@ const DeckFormTestComponent = ({ card }) => {
 
       {deckCards.map((card) => (
         <div key={card.id}>
-          {card.id} {card.name}
+          {card.count} {card.name}
         </div>
       ))}
     </>
@@ -69,10 +69,32 @@ const setup = (initialState, deckId) => {
   };
 };
 
+const clickTimes = (button, times) => {
+  [...new Array(times)].forEach(() => {
+    button.click();
+  });
+};
+
 describe("DeckFormProvider", () => {
   it("should be render with default props", () => {
     const { container } = setup();
 
     expect(container).toBeInTheDocument();
+  });
+
+  it("should be add card correctly", () => {
+    const { buttonAdd, getByText, card } = setup();
+    const twoTimes = 2;
+
+    clickTimes(buttonAdd, twoTimes);
+
+    const firstElement = getByText(`${twoTimes} ${card.name}`);
+
+    clickTimes(buttonAdd, 10);
+
+    const secondElement = getByText(`4 ${card.name}`);
+
+    expect(firstElement).toBeInTheDocument();
+    expect(secondElement).toBeInTheDocument();
   });
 });
