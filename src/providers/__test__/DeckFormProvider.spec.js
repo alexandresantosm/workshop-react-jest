@@ -5,12 +5,14 @@ import { Provider } from "react-redux";
 
 import DeckFormProvider, { DeckFormContext } from "../DeckFormProvider";
 import { storeBuilder } from "../../__mocks__/StoreBuilder";
-import { pikachuMock } from "../../__mocks__/CardBuilder";
+import { cardBuilder, pikachuMock } from "../../__mocks__/CardBuilder";
 import { deckBuilder } from "../../__mocks__/DeckBuilder";
 import { arrayToObject, getArrayIds } from "../../__mocks__/utils";
 import errorHandler from "../../utils/error-handler";
+import sucessHandler from "../../utils/sucess-handler";
 
 jest.mock("../../utils/error-handler");
+jest.mock("../../utils/sucess-handler");
 
 const DeckFormTestComponent = ({ card }) => {
   const {
@@ -167,5 +169,31 @@ describe("DeckFormProvider", () => {
     expect(errorHandler).toHaveBeenCalledWith(
       "Seu baralho precisa ter no mínimo 24 e no máximo 60 cartas."
     );
+  });
+
+  it("should be save deck correctly", () => {
+    const deck = deckBuilder({
+      cards: [
+        cardBuilder({ name: "Card Test 1", count: 4 }),
+        cardBuilder({ name: "Card Test 2", count: 4 }),
+        cardBuilder({ name: "Card Test 3", count: 4 }),
+        cardBuilder({ name: "Card Test 4", count: 4 }),
+        cardBuilder({ name: "Card Test 5", count: 4 }),
+        cardBuilder({ name: "Card Test 6", count: 4 }),
+      ],
+    });
+
+    const initialState = {
+      deck: {
+        decks: arrayToObject([deck]),
+        ids: getArrayIds([deck]),
+      },
+    };
+
+    const { buttonSave } = setup(initialState, deck.id);
+
+    fireEvent.click(buttonSave);
+
+    expect(sucessHandler).toHaveBeenCalledWith("Deck salvo com sucesso");
   });
 });
